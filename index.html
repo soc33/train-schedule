@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Train Schedule</title>
+    <!-- linking bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <!-- linking my css -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- linking jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- linking firebase CHANGE THIS!!!!!!!!!-->
+    <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase-database.js"></script>
+    <!-- linking moment js -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.23.0/moment.min.js"></script>
+    <!-- linking my javascript file -->
+    <script src="assets/javascript/javascript.js"></script>
+    <!-- linking my favicon -->
+    <link rel='icon' href='assets/images/kitykatGameImageSmall.png' type='image/x-icon' />
+</head>
+
+<body>
+    <div class="container">
+        <div id="row">
+            <div id="col-sm-8 offset-sm-2">
+                <div class="jumbotron text-center bg-transparent rounded">
+                    <div class="container">
+                        <h1 class="display-4">
+                            Disney Rules the world!
+                        </h1>
+                        <p class="lead">
+                            Disney Train Schedule for any and all Disney Resorts!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="row">
+            <div id="col-sm-8 offset-sm-2">
+                <div class="card bg-transparent">
+                    <div class="card-header">
+                        Current Train Schedule
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Train Name</th>
+                                    <th scope="col">Destination</th>
+                                    <th scope="col">Frequency (minutes)</th>
+                                    <th scope="col">Next Arrival</th>
+                                    <th scope="col">Minutes Away</th>
+                                </tr>
+                            </thead>
+                            <tbody id="train-schedule">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div><br>
+        <div class="train"></div>
+        <br>
+        <div id="row">
+            <div id="col-sm-8 offset-sm-2">
+
+                <div class="card bg-transparent">
+                    <div class="card-header">
+                        Add new Train
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="nameOfTrain">Train Name</label>
+                                <input type="text" class="form-control" id="nameOfTrain" placeholder="Mickey's Express">
+                            </div>
+                            <div class="form-group">
+                                <label for="nameOfDestination">Destination</label>
+                                <input type="text" class="form-control" id="nameOfDestination" placeholder="Magic Kingdom, Orlando">
+                            </div>
+                            <div class="form-group">
+                                <label for="firstTrain">First Train Time</label>
+                                <input type="text" class="form-control" id="firstTrain" placeholder="08:00">
+                            </div>
+                            <div class="form-group">
+                                <label for="frequency">Frequency (minutes)</label>
+                                <input type="text" class="form-control" id="frequency" placeholder="20">
+                            </div>
+                            <button type="submit" class="btn btn-primary float-right" id="add-train">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <br><br>
+            </div>
+        </div>
+    </div>
+    <!-- Train Name
+
+* Destination
+
+* First Train Time -- in military time
+
+* Frequency -- in minutes
+
+* Code this app to calculate when the next train will arrive; this should be relative to the current time.
+
+* Users from many different machines must be able to view same train times.
+
+* Styling and theme are completely up to you. Get Creative!
+
+### Example Site
+
+![train homework](Train_Time_Image.png)
+
+### Bonus (Extra Challenges)
+
+* Consider updating your "minutes to arrival" and "next train time" text once every minute. This is significantly more
+challenging; only attempt this if you've completed the actual activity and committed it somewhere on GitHub for
+safekeeping (and maybe create a second GitHub repo).
+
+* Try adding `update` and `remove` buttons for each train. Let the user edit the row's elements-- allow them to change
+a train's Name, Destination and Arrival Time (and then, by relation, minutes to arrival).
+
+* As a final challenge, make it so that only users who log into the site with their Google or GitHub accounts can use
+your site. You'll need to read up on Firebase authentication for this bonus exercise. -->
+</body>
+
+</html>

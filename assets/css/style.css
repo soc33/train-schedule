@@ -1,0 +1,31 @@
+@font-face {
+    font-family: disney;
+    src: url('../font/Walter.ttf');
+}
+@font-face {
+    font-family: disney-pictures;
+    src: url('../font/Disney\ family\ 1.ttf')
+}
+@font-face {
+    font-family: magic-markers;
+    src: url('../font/Magical\ Markers.otf');
+}
+/* @media only screen and (min-width: 600px) {
+
+} */
+body {
+    background-color: aquamarine;
+    font-family: magic-markers;
+    background-image: url('../images/mickey.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    color: white;
+}
+h1 {
+    font-family: disney;
+}
+/* .jumbotron {
+    background-image: url('../images/princesses.jpg');
+    background-size: cover;
+} */
