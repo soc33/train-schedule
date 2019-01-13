@@ -12,61 +12,66 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 $(document).ready(function () {
+    $(".error").hide();
+
+    hideAlerts = function () {
+        $(".success").hide();
+    }
+    hideAlerts();
 
     $("#add-train").on("click", function (e) {
         e.preventDefault();
-        var newTrain = {
-            name: $("#nameOfTrain").val().trim(),
-            destination: $("#nameOfDestination").val().trim(),
-            frequency: $("#frequency").val().trim(),
-            first: $("#firstTrain").val().trim()
+        // confiriming that al the necessary math values are in place
+        if (($("#firstTrain").val() === "") || ($("#lastTrain").val() === "") || ($("#frequency").val() === "")) {
+            $(".error").show();
+        } else {
+            $(".error").hide();
+            $(".success").show();
+            setTimeout(hideAlerts, 5000);
+            var newTrain = {
+                name: $("#nameOfTrain").val().trim(),
+                destination: $("#nameOfDestination").val().trim(),
+                frequency: $("#frequency").val().trim(),
+                first: $("#firstTrain").val().trim(),
+                last: $("#lastTrain").val().trim()
+            }
+            database.ref().push({
+                newTrain
+            });
+            $("#nameOfTrain").val("");
+            $("#nameOfDestination").val("");
+            $("#frequency").val("");
+            $("#firstTrain").val("");
+            $("#lastTrain").val("");
         }
-        database.ref().push({
-            newTrain
-        });
-        $("#nameOfTrain").val("");
-        $("#nameOfDestination").val("");
-        $("#frequency").val("");
-        $("#firstTrain").val("");
-
     });
 
     database.ref().on("child_added", function (snap) {
-        var format = "HH:mm";
-        var nowMin = moment().format("mm");
-        var nowHour = moment().format("HH");
-        var nextTrainTime = "";
-        var firstTrain = snap.val().newTrain.first;
-        console.log(firstTrain);
-        var convertedTrainTime = moment(firstTrain, format);
-        var trainMath = ((convertedTrainTime.diff(moment(), "minutes")) % snap.val().newTrain.frequency) +1;
-        // var trial = ((convertedTrainTime.diff(moment(), "minutes")) % snap.val().newTrain.frequency);
-        // console.log(trial);
-        // console.log(trainMath);
-        var nextTrainMin = parseInt(nowMin) + parseInt(trainMath);
-        // if (nextTrainMin.length === 1) {
-        //     var newTime = "0" + nextTrainMin;
-        //     nextTrainTime = nowHour + ":" + newTime;
-        // }
-        if (nextTrainMin > 59) {
-            var newHour = parseInt(nowHour) + 1;
-            var newMin = nextTrainMin % 60;
-            if (newMin < 10) {
-                newMin = "0" + newMin;
-            }
-            if (newHour === 24) {
-                newHour = "00";
-            }
-            nextTrainTime = newHour + ":" + newMin;
-            // console.log(nextTrainTime);
+        const TIME_FORMAT = "HH:mm";
+        var dbNewTrain = snap.val().newTrain;
+        var now = moment();
+        var newTrainFrequencyNum = parseInt(dbNewTrain.frequency);
+        var firstTrainTimeString = dbNewTrain.first;
+        var lastTrainTimeString = dbNewTrain.last;
+        console.log(firstTrainTimeString);
+        var firstTrainMoment = moment(firstTrainTimeString, TIME_FORMAT);
+        var lastTrainMoment = moment(lastTrainTimeString, TIME_FORMAT);
+        var minutesUntilNextTrain, nextTrainTime;
+
+        if (now.isBefore(firstTrainMoment)) {
+            nextTrainTime = firstTrainMoment.format(TIME_FORMAT);
+            minutesUntilNextTrain = Math.ceil(firstTrainMoment.diff(now, "minutes", true));
+        } else if (now.isAfter(lastTrainMoment)) {
+            nextTrainTime = "Tomorrow at: " + firstTrainMoment.format(TIME_FORMAT);
+            firstTrainMoment.add(1, "days");
+            minutesUntilNextTrain = Math.ceil(firstTrainMoment.diff(now, "minutes", true));
         } else {
-            nextTrainTime = nowHour + ":" + nextTrainMin;
-            // console.log(nextTrainTime);
+            minutesUntilNextTrain = newTrainFrequencyNum - (now.diff(firstTrainMoment, "minutes") % newTrainFrequencyNum);
+            nextTrainTime = now.add(minutesUntilNextTrain, "minutes").format(TIME_FORMAT);
         }
 
-        // console.log(trainMath);
         var newRow = $("<tr>");
-        newRow.html("<td>" + snap.val().newTrain.name + "</td>").append("<td>" + snap.val().newTrain.destination + "</td>").append("<td>" + snap.val().newTrain.frequency + "</td>").append("<td>" + nextTrainTime + "</td>").append("<td>" + trainMath + "</td>");
+        newRow.html("<td>" + dbNewTrain.name + "</td>").append("<td>" + dbNewTrain.destination + "</td>").append("<td>" + newTrainFrequencyNum + "</td>").append("<td>" + nextTrainTime + "</td>").append("<td>" + minutesUntilNextTrain + "</td>");
 
         $("#train-schedule").append(newRow);
 

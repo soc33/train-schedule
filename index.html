@@ -68,6 +68,13 @@
         <br>
         <div id="row">
             <div id="col-sm-8 offset-sm-2">
+                <div class="alert alert-danger error" role="alert">
+                    You did not provide all necessary information! Please make sure you have entered a start time, end
+                    time, and a frequency.
+                </div>
+                <div class="alert alert-success success" role="alert">
+                    You successfully added a train!
+                </div>
 
                 <div class="card bg-transparent">
                     <div class="card-header">
@@ -88,6 +95,10 @@
                                 <input type="text" class="form-control" id="firstTrain" placeholder="08:00">
                             </div>
                             <div class="form-group">
+                                <label for="firstTrain">Last Train Time</label>
+                                <input type="text" class="form-control" id="lastTrain" placeholder="23:00">
+                            </div>
+                            <div class="form-group">
                                 <label for="frequency">Frequency (minutes)</label>
                                 <input type="text" class="form-control" id="frequency" placeholder="20">
                             </div>
@@ -101,24 +112,6 @@
     </div>
     <!-- Train Name
 
-* Destination
-
-* First Train Time -- in military time
-
-* Frequency -- in minutes
-
-* Code this app to calculate when the next train will arrive; this should be relative to the current time.
-
-* Users from many different machines must be able to view same train times.
-
-* Styling and theme are completely up to you. Get Creative!
-
-### Example Site
-
-![train homework](Train_Time_Image.png)
-
-### Bonus (Extra Challenges)
-
 * Consider updating your "minutes to arrival" and "next train time" text once every minute. This is significantly more
 challenging; only attempt this if you've completed the actual activity and committed it somewhere on GitHub for
 safekeeping (and maybe create a second GitHub repo).
@@ -127,7 +120,10 @@ safekeeping (and maybe create a second GitHub repo).
 a train's Name, Destination and Arrival Time (and then, by relation, minutes to arrival).
 
 * As a final challenge, make it so that only users who log into the site with their Google or GitHub accounts can use
-your site. You'll need to read up on Firebase authentication for this bonus exercise. -->
+your site. You'll need to read up on Firebase authentication for this bonus exercise.
+
+Dave's Challenge: Only allow the person who created the train can delete or edit this train-->
+
 </body>
 
 </html>
