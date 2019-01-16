@@ -13,6 +13,7 @@ var database = firebase.database();
 
 $(document).ready(function () {
     $(".error").hide();
+    var newTrain;
 
     hideAlerts = function () {
         $(".success").hide();
@@ -28,7 +29,7 @@ $(document).ready(function () {
             $(".error").hide();
             $(".success").show();
             setTimeout(hideAlerts, 5000);
-            var newTrain = {
+            newTrain = {
                 name: $("#nameOfTrain").val().trim(),
                 destination: $("#nameOfDestination").val().trim(),
                 frequency: $("#frequency").val().trim(),
@@ -49,6 +50,9 @@ $(document).ready(function () {
     database.ref().on("child_added", function (snap) {
         const TIME_FORMAT = "HH:mm";
         var dbNewTrain = snap.val().newTrain;
+        // var newChildRef = sna;
+        // we can get its id using key()
+        console.log('my new shiny id is ' + snap.key);
         var now = moment();
         var newTrainFrequencyNum = parseInt(dbNewTrain.frequency);
         var firstTrainTimeString = dbNewTrain.first;
@@ -70,13 +74,23 @@ $(document).ready(function () {
             nextTrainTime = now.add(minutesUntilNextTrain, "minutes").format(TIME_FORMAT);
         }
 
-        var newRow = $("<tr>");
-        newRow.html("<td>" + dbNewTrain.name + "</td>").append("<td>" + dbNewTrain.destination + "</td>").append("<td>" + newTrainFrequencyNum + "</td>").append("<td>" + nextTrainTime + "</td>").append("<td>" + minutesUntilNextTrain + "</td>");
+        var newRow = $("<tr id='" + snap.key + "'>");
+        newRow.html("<td>" + dbNewTrain.name + "</td>").append("<td>" + dbNewTrain.destination + "</td>").append("<td>" + newTrainFrequencyNum + "</td>").append("<td>" + nextTrainTime + "</td>").append("<td>" + minutesUntilNextTrain + "</td>").append("<button class='delete'> Delete </button>");
 
         $("#train-schedule").append(newRow);
 
     }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
     });
+
+    $("#train-schedule").on("click", ".delete", function () {
+        var infoToBeDeleted = $(this).closest('tr').attr("id");
+        console.log(infoToBeDeleted);
+        var childToDelete = database.ref(infoToBeDeleted);
+        console.log(childToDelete);
+        childToDelete.remove()
+        .then($(this).closest('tr').remove());
+
+    })
 
 });
